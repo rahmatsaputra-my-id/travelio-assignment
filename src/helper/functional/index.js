@@ -37,3 +37,10 @@ export const handlerCapitalizeEveryWord = text => {
 export const rdxDispatch = (action = false) => {
   return store.dispatch(action);
 };
+
+export const ensureHttps = uri => {
+  if (typeof uri === 'string' && uri.startsWith('http://')) {
+    return 'https://' + uri.slice(7);
+  }
+  return uri;
+};

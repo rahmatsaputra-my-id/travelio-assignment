@@ -7,6 +7,7 @@ import {
   ScrollView,
 } from 'react-native';
 import {
+  ensureHttps,
   handlerCapitalizeEveryWord,
   rdxDispatch,
   useMergeState,
@@ -74,7 +75,7 @@ const ExploreScreen = ({}) => {
           <View style={styles.cardThumbnailContainer}>
             <Image
               style={styles.cardThumbnail}
-              source={{uri: volumeInfo?.imageLinks?.thumbnail}}
+              source={{uri: ensureHttps(volumeInfo?.imageLinks?.thumbnail)}}
             />
           </View>
         ) : null}

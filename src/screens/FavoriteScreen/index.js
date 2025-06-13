@@ -7,6 +7,7 @@ import {
   View,
 } from 'react-native';
 import {
+  ensureHttps,
   handlerCapitalizeEveryWord,
   rdxDispatch,
   useMergeState,
@@ -30,7 +31,13 @@ const FavoriteScreen = ({}) => {
 
   const handleUnSavedBook = value => {
     const newFavoriteList = favoriteList.filter(val => val?.id !== value.id);
+    let arrayTemp = tempFavoriteList;
 
+    if (query) {
+      arrayTemp = tempFavoriteList.filter(val => val?.id !== value.id);
+    }
+
+    setState({tempFavoriteList: arrayTemp});
     rdxDispatch({
       type: KEYS.FAVORITE_LIST,
       favoriteList: newFavoriteList,
@@ -39,9 +46,9 @@ const FavoriteScreen = ({}) => {
 
   const handleOnChangeSearch = q => {
     const array = favoriteList.filter(items =>
-      items?.volumeInfo?.title.includes(q),
+      items?.volumeInfo?.title?.toLowerCase()?.includes(q),
     );
-    setState({query: q, tempFavoriteList: array});
+    setState({query: q.toLowerCase(), tempFavoriteList: array});
   };
 
   const renderItem = (value, idx) => {
@@ -52,7 +59,7 @@ const FavoriteScreen = ({}) => {
           <View style={styles.cardThumbnailContainer}>
             <Image
               style={styles.cardThumbnail}
-              source={{uri: volumeInfo?.imageLinks?.thumbnail}}
+              source={{uri: ensureHttps(volumeInfo?.imageLinks?.thumbnail)}}
             />
           </View>
         ) : null}
